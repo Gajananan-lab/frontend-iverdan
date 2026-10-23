@@ -5,17 +5,17 @@ import { Menu, X, ArrowRight } from 'lucide-react';
 interface HeaderProps {
   activeSection: string;
   onNavigate: (sectionId: string) => void;
+  productPage?: boolean;
 }
 
 const UiverseCtaButton: React.FC<{
   label: string;
-  onClick: () => void;
+  href: string;
   className?: string;
   showIcon?: boolean;
-}> = ({ label, onClick, className = '', showIcon = true }) => (
-  <button
-    type="button"
-    onClick={onClick}
+}> = ({ label, href, className = '', showIcon = true }) => (
+  <a
+    href={href}
     className={`uiverse-btn group ${className}`}
   >
     <span className="fold" aria-hidden="true" />
@@ -25,10 +25,10 @@ const UiverseCtaButton: React.FC<{
         <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 shrink-0" />
       )}
     </span>
-  </button>
+  </a>
 );
 
-export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => {
+export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate, productPage = false }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -57,18 +57,26 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const navItems = [
-    { id: 'hero', label: 'Home' },
-    { id: 'about', label: 'About' },
-    { id: 'features', label: 'Features' },
-    { id: 'pricing', label: 'Pricing' },
-    { id: 'demo', label: 'Demo' },
-    { id: 'team', label: 'Team' },
-    { id: 'contact', label: 'Contact' },
-  ];
+  const navItems = productPage
+    ? [
+        { id: 'product-hero', label: 'Home' },
+        { id: 'outcomes', label: 'Outcomes' },
+        { id: 'capabilities', label: 'Capabilities' },
+        { id: 'workflow', label: 'Workflow' },
+        { id: 'trust', label: 'Trust' },
+      ]
+    : [
+        { id: 'hero', label: 'Home' },
+        { id: 'about', label: 'About' },
+        { id: 'features', label: 'Features' },
+        { id: 'pricing', label: 'Pricing' },
+        { id: 'demo', label: 'Demo' },
+        { id: 'team', label: 'Team' },
+        { id: 'contact', label: 'Contact' },
+      ];
 
   const handleNavClick = (id: string) => {
-    if (id === 'hero') {
+    if ((productPage && id === 'product-hero') || (!productPage && id === 'hero')) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       onNavigate(id);
@@ -87,8 +95,9 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 flex items-center justify-between">
         {/* Left: Brand Logo from public/Logo Iverdan.svg */}
         <a
-          href="#"
+          href={productPage ? '/' : '#'}
           onClick={(e) => {
+            if (productPage) return;
             e.preventDefault();
             handleNavClick('hero');
           }}
@@ -118,6 +127,14 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
                   key={item.id}
                   href={`#${item.id}`}
                   onClick={(e) => {
+                    if (productPage) {
+                      setMobileMenuOpen(false);
+                      if (item.id === 'product-hero') {
+                        e.preventDefault();
+                        handleNavClick(item.id);
+                      }
+                      return;
+                    }
                     e.preventDefault();
                     handleNavClick(item.id);
                   }}
@@ -148,7 +165,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
           {/* 2. Separate Action CTA Button with Uiverse Animated Theme Glow */}
           <UiverseCtaButton
             label="Iverdan Lab"
-            onClick={() => handleNavClick('contact')}
+            href="/product"
             className="px-5 py-2.5 text-xs xl:text-[13px]"
           />
         </div>
@@ -199,6 +216,14 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
                     key={item.id}
                     href={`#${item.id}`}
                     onClick={(e) => {
+                      if (productPage) {
+                        setMobileMenuOpen(false);
+                        if (item.id === 'product-hero') {
+                          e.preventDefault();
+                          handleNavClick(item.id);
+                        }
+                        return;
+                      }
                       e.preventDefault();
                       handleNavClick(item.id);
                     }}
@@ -212,7 +237,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate }) => 
             </nav>
             <UiverseCtaButton
               label="Iverdan Lab"
-              onClick={() => handleNavClick('contact')}
+              href="/product"
               className="w-full py-3 px-4 text-xs [--round:0.75rem]"
             />
           </motion.div>
