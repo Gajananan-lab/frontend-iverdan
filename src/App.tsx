@@ -12,8 +12,15 @@ import Team from './components/Team.tsx';
 import Contact from './components/Contact.tsx';
 import Footer from './components/Footer.tsx';
 import CookieBanner from './components/CookieBanner.tsx';
+import ProductPage from './components/ProductPage.tsx';
 
 export default function App() {
+  return window.location.pathname.replace(/\/$/, '') === '/product'
+    ? <ProductPage />
+    : <HomePage />;
+}
+
+function HomePage() {
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [inquiryType, setInquiryType] = useState<string>('Product Demo');
 

@@ -75,7 +75,8 @@ export const Hero: React.FC<HeroProps> = ({
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
                 type="button"
-                onClick={() => setIsVideoModalOpen(true)}
+                // onClick={() => setIsVideoModalOpen(true)}
+                onClick={() => { window.location.href = '/product'; }}
                 className="w-full sm:w-auto bg-[#5425B8] hover:bg-[#6533d1] text-white font-['Sora'] font-bold text-xs sm:text-[13px] tracking-widest uppercase px-8 py-4 rounded-full transition-all duration-200 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white flex items-center justify-center gap-2.5"
               >
                 <span>Iverdan Lab</span>
