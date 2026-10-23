@@ -1,0 +1,6 @@
+{
+  "name": "Iverdan - Financial Planning & Scenario Intelligence",
+  "description": "Transform financial data into structured budgets, forecasts, and business scenarios. Understand potential outcomes, evaluate assumptions, and make more informed planning decisions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
